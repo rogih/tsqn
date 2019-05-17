@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "#Comparisson between standard ACVF and ACVF from the periodogram\n\n#Number of rep\nnrep <- 600\n\n\n\nmean <- 0\nsigma2 <- 1\n\nn1 <- 100\nn2 <- 300\nn3 <- 800\n\nphi1 <- 0.3\nphi2 <- 0.5\nphi3 <- 0.8\n\nlagmax = 5\n\nacfTeor1 <- tacvfARMA(phi = 0.3,  maxLag = lagmax-1, sigma2 = 1)\nacfTeor2 <- tacvfARMA(phi = 0.5,  maxLag = lagmax-1, sigma2 = 1)\nacfTeor3 <- tacvfARMA(phi = 0.8,  maxLag = lagmax-1, sigma2 = 1)\n\nacf11 <- matrix(0,nrep,lagmax)\nacf12 <- matrix(0,nrep,lagmax)\nacf13 <- matrix(0,nrep,lagmax)\n\nacf21 <- matrix(0,nrep,lagmax)\nacf22 <- matrix(0,nrep,lagmax)\nacf23 <- matrix(0,nrep,lagmax)\n\nacf31 <- matrix(0,nrep,lagmax)\nacf32 <- matrix(0,nrep,lagmax)\nacf33 <- matrix(0,nrep,lagmax)\n\n\n\n\nrmse1 <- matrix(0,nrep,lagmax)\nrmse2 <- matrix(0,nrep,lagmax)\nrmse3 <- matrix(0,nrep,lagmax)\n\nbias1 <- matrix(0,nrep,lagmax)\nbias2 <- matrix(0,nrep,lagmax)\nbias3 <- matrix(0,nrep,lagmax)\n\nfor(i in 1:nrep){\n  cat(\"i\",i,\"\\n\")\n  ar.sim <- arima.sim(model=list(ar=c(phi3)),n=n1)\n  acf11[i,] <- acf(ar.sim,lag.max = lagmax-1, type=\"cov\")$acf[,,1]\n  acf12[i,] <- acfFFT(ar.sim,lag.max = lagmax, type=\"cov\")\n\n  acf13 <- round(acf11 - acf12,digits=7)\n\n  rmse1[i,] <- (acf11[i,]-acfTeor3)^2\n  bias1[i,] <- (acf11[i,]-acfTeor3)\n\n  ar.sim <- arima.sim(model=list(ar=c(phi3)),n=n2)\n  acf21[i,] <- acf(ar.sim,lag.max = lagmax-1, type=\"cov\")$acf[,,1]\n  acf22[i,] <- acfFFT(ar.sim,lag.max = lagmax, type=\"cov\")\n\n  acf23 <- round(acf21 - acf22,digits=7)\n\n  rmse2[i,] <- (acf21[i,]-acfTeor3)^2\n  bias2[i,] <- (acf21[i,]-acfTeor3)\n\n\n  ar.sim <- arima.sim(model=list(ar=c(phi3)),n=n3)\n  acf31[i,] <- acf(ar.sim,lag.max = lagmax-1, type=\"cov\")$acf[,,1]\n  acf32[i,] <- acfFFT(ar.sim,lag.max = lagmax, type=\"cov\")\n\n  rmse3[i,] <- (acf31[i,]-acfTeor3)^2\n  bias3[i,] <- (acf31[i,]-acfTeor3)\n\n  acf33 <- round(acf31 - acf32,digits=7)\n}\n\n\nround(colMeans(acf11),digits=5)\nround(colMeans(rmse1),digits=5)\nround(colMeans(bias1),digits=5)\n\nround(colMeans(acf21),digits=5)\nround(colMeans(rmse2),digits=5)\nround(colMeans(bias2),digits=5)\n\nround(colMeans(acf31),digits=5)\nround(colMeans(rmse3),digits=5)\nround(colMeans(bias3),digits=5)\n\nacf13\nacf23\nacf33\n",
+    "created" : 1491853840092.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "496412491",
+    "id" : "66D9998",
+    "lastKnownWriteTime" : 1491860378,
+    "last_content_update" : 1491860378199,
+    "path" : "/arquivos/Dropbox/Doutorado/R-Codes/compAutocovariance.r",
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

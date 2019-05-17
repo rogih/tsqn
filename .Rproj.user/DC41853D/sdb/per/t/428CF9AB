@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "acfFFT <- function (x,type = c(\"correlation\", \"covariance\"), lag.max = NULL) {\n  series <- deparse(substitute(x))\n  x <- as.matrix(x)\n  if (!is.numeric(x))\n    stop(\"'x' must be numeric\")\n  n <- as.integer(nrow(x))\n  nser <- as.integer(ncol(x))\n  if (is.na(n) || is.na(nser))\n    stop(\"'sampleT' and 'nser' must be integer\")\n  if (is.null(lag.max))\n    lag.max <- floor(10 * (log10(n) - log10(nser)))\n  lag.max <- as.integer(min(lag.max, n - 1L))\n  if (is.na(lag.max) || lag.max < 0)\n    stop(\"'lag.max' must be at least 0\")\n  type <- match.arg(type)\n  centTS <- x - mean(x)\n  series <- c(centTS,rep(0,n))\n  auxFFT <- fft(series)\n  auxConjC <- auxFFT*Conj(auxFFT)/length(series)\n  ans <- fft(auxConjC,inverse = TRUE)[1:n]\n  ans <- Re(ans)/n\n  if (type == \"covariance\") {\n    return(ans[1:lag.max])\n  }\n  else {\n    return(ans[1:lag.max]/ans[1])\n  }\n}\n",
+    "created" : 1491853519592.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3870534043",
+    "id" : "428CF9AB",
+    "lastKnownWriteTime" : 1491854554,
+    "last_content_update" : 1491854554367,
+    "path" : "/arquivos/Dropbox/Doutorado/R-Codes/acfFFT.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
